@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InfraredMapper">
+        <insert id="dataPayload" parameterType="Device">
+            INSERT INTO hardware_infrared_data_payload
+            (
+battery_value,
+sinr,
+ecl,
+rsrp,
+pci,
+cell_id,
+IMEI,
+IMSI,
+ICCID,
+error_code,
+tamp_state,
+arming_state,
+terminal_type,
+heartbeat_time,
+battery_voltage,
+hardware_version,
+software_version,
+manufacturer_name,
+device_state,
+battery_state,
+infrared_detection_state,
+work_mode,
+activity_period,
+activity,
+urgentReport,
+activityPlan,
+alarmCounter
+            )
+            VALUES(
+#{battery_value},
+#{sinr},
+#{ecl},
+#{rsrp},
+#{pci},
+#{cell_id},
+#{IMEI},
+#{IMSI},
+#{ICCID},
+#{error_code},
+#{tamp_state},
+#{arming_state},
+#{terminal_type},
+#{heartbeat_time},
+#{battery_voltage},
+#{hardware_version},
+#{software_version},
+#{manufacturer_name},
+#{device_state},
+#{battery_state},
+#{infrared_detection_state},
+#{work_mode},
+#{activity_period},
+#{activity},
+#{urgentReport},
+#{activityPlan},
+#{alarmCounter}
+                  )
+        </insert>
+
+        <insert id="dataMetaInfo" parameterType="DataChanges">
+            INSERT INTO hardware_infrared_data_meta_info
+            (
+                upPacketSN,
+                upDataSN,
+                topic,
+                timestamp,
+                tenantId,
+                serviceId,
+                protocol,
+                productId,
+                messageType,
+                deviceType,
+                deviceId,
+                assocAssetId,
+                IMSI,
+                IMEI
+            )
+            VALUES(
+                      #{upPacketSN},
+                      #{upDataSN},
+                      #{topic},
+                      #{timestamp},
+                      #{tenantId},
+                      #{serviceId},
+                      #{protocol},
+                      #{productId},
+                      #{messageType},
+                      #{deviceType},
+                      #{deviceId},
+                      #{assocAssetId},
+                      #{IMSI},
+                      #{IMEI}
+                  )
+        </insert>
+
+        <insert id="eventMetaInfo" parameterType="EventReport">
+            INSERT INTO hardware_infrared_event_meta_info
+            (
+timestamp,
+tenantId,
+serviceId,
+protocol,
+productId,
+messageType,
+eventType,
+deviceSn,
+deviceId,
+IMSI,
+IMEI
+            )
+            VALUES(
+                      #{timestamp},
+                      #{tenantId},
+                      #{serviceId},
+                      #{protocol},
+                      #{productId},
+                      #{messageType},
+                      #{eventType},
+                      #{deviceSn},
+                      #{deviceId},
+                      #{IMSI},
+                      #{IMEI}
+                  )
+        </insert>
+
+        <insert id="eventContent" parameterType="Device">
+            INSERT INTO hardware_infrared_event_content
+            (
+tamp_state,
+battery_state,
+battery_voltage,
+battery_value
+            )
+            VALUES(
+                      #{tamp_state},
+                      #{battery_state},
+                      #{battery_voltage},
+                      #{battery_value}
+                  )
+        </insert>
+
+        <insert id="online" parameterType="Online">
+            INSERT INTO hardware_infrared_online_offline
+            (
+                deviceId,
+                tenantId,
+                productId,
+                eventType,
+                messageType,
+                timestamp
+            )
+            VALUES(
+                      #{deviceId},
+                      #{tenantId},
+                      #{productId},
+                      #{eventType},
+                      #{messageType},
+                      #{timestamp}
+                  )
+        </insert>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc_core.dao.ElderlyMapper">
+
+
+    <select id="queryElderlyById" resultType="Elderly">
+        SELECT elderly_id,name,age,sex,telephone,id_card,community,address,living_type,family_type,block_no
+        FROM elderly
+        WHERE elderly_id = #{elderlyId};
+    </select>
+
+
+    <!--    <resultMap id="myMap" type="java.util.Map">-->
+    <!--        <result property="key" column="living_type" javaType="java.lang.Object"/>-->
+    <!--        <result property="value" column="count" javaType="java.lang.String"/>-->
+    <!--    </resultMap>-->
+
+    <select id="countElderlyByLivingType" resultType="java.util.HashMap">
+        SELECT count(living_type) as count, living_type
+        FROM elderly
+        GROUP BY living_type;
+    </select>
+
+    <select id="countElderlyBySex" resultType="java.util.HashMap">
+        SELECT count(sex) as count, sex
+        FROM elderly
+        GROUP BY sex;
+    </select>
+
+    <select id="countElderlyByFamilyType" resultType="java.util.HashMap">
+        SELECT count(family_type) as count, family_type
+        FROM elderly
+        GROUP BY family_type;
+    </select>
+
+    <select id="countElderlyByAge" resultType="java.util.HashMap">
+        SELECT '60-69' as 'range', count(*) as count
+        FROM elderly
+        WHERE age between 60 and 69
+          UNION ALL
+        SELECT '70-79' as 'range', count(*) as count
+        FROM elderly
+        WHERE age between 70 and 79
+          UNION ALL
+        SELECT '80-89' as 'range', count(*) as count
+        FROM elderly
+        WHERE age between 80 and 89
+          UNION ALL
+        SELECT '90-99' as 'range', count(*) as count
+        FROM elderly
+        WHERE age between 90 and 99
+          UNION ALL
+        SELECT '>=100' as 'range', count(*) as count
+        FROM elderly
+        WHERE age >= 100;
+    </select>
+    <select id="queryElderlyInFoById" resultType="java.util.List">
+        select name,telephone,community from elderly where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findElderlyByAddress" resultType="com.sc_core.entity.Elderly">
+        select elderly_id,name,age,sex,telephone,id_card,community,address,living_type,family_type,block_no
+         from elderly
+        <where>
+            <if test="elderlyProvince != null and elderlyProvince != ''">
+                and address like concat('%', #{elderlyProvince}, '%')
+            </if>
+            <if test="elderlyCity != null and elderlyCity != ''">
+                and address like concat('%', #{elderlyCity}, '%')
+            </if>
+            <if test="elderlyArea != null and elderlyArea != ''">
+                and address like concat('%', #{elderlyArea}, '%')
+            </if>
+            <if test="elderlyStreet != null and elderlyStreet != ''">
+                and address like concat('%', #{elderlyStreet}, '%')
+            </if>
+            <if test="elderlyCommunity != null and elderlyCommunity != ''">
+                and address like concat('%', #{elderlyCommunity}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findElderly" resultType="com.sc_core.entity.Elderly">
+        select elderly_id,name,age,sex,telephone,id_card,community,address,living_type,family_type,block_no
+         from elderly
+        <where>
+            <if test="sex != null and sex != ''">
+                and sex like concat('%', #{sex}, '%')
+            </if>
+            <if test="community != null and community != ''">
+                and community like concat('%', #{community}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="ageLow != null and ageHigh != null and ageLow != '' and ageHigh != ''">
+                and age between #{ageLow} and #{ageHigh}
+            </if>
+            <if test="livingType != null and livingType != ''">
+                and living_type like concat('%', #{livingType}, '%')
+            </if>
+            <if test="familyType != null and familyType != ''">
+                and family_type like concat('%', #{familyType}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="findElderlyPhoto" resultType="java.lang.Object">
+         select elderly_photo from elderly where elderly_id = #{elderlyId,jdbcType=VARCHAR}
+    </select>
+    <select id="findElderlyByid" resultType="com.sc_core.entity.Elderly">
+        select elderly_id,name,age,sex,telephone,id_card,community,address,living_type,family_type,block_no
+         from elderly where elderly_id = #{elderlyId}
+    </select>
+
+
+</mapper>

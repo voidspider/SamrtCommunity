@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc_core.dao.LocationMapper">
+
+    <select id="getEveryBlock" resultType="Block">
+        SELECT * FROM block;
+    </select>
+
+    <select id="getBlockByCommunity" resultType="Block">
+        SELECT * FROM block WHERE community=#{community};
+    </select>
+
+    <select id="getBraceletLocationByElderlyId" resultType="java.util.HashMap">
+        SELECT bracelet_id, bracelet_longitude, bracelet_latitude
+        FROM bracelet
+        WHERE elderly_id = #{elderlyId};
+    </select>
+
+    <select id="getCaregiverLocationByElderlyId" resultType="java.util.HashMap">
+        SELECT caregiver_id, caregiver_longitude, caregiver_latitude
+        FROM caregiver
+        WHERE elderly_id = #{elderlyId};
+    </select>
+</mapper>

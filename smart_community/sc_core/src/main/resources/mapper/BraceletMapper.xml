@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sc_core.dao.BraceletMapper">
+    <resultMap id="BaseResultMap" type="com.sc_core.entity.BraceletEquipment">
+        <id column="bracelet_id" jdbcType="INTEGER" property="braceletId"/>
+        <result column="elderly_id" jdbcType="INTEGER" property="elderlyId"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType"/>
+        <result column="sn_code" jdbcType="VARCHAR" property="snCode"/>
+        <result column="carry_state" jdbcType="VARCHAR" property="carryState"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="community" jdbcType="VARCHAR" property="community"/>
+        <result column="online_state" jdbcType="VARCHAR" property="onlineState"/>
+        <result column="collect_times" jdbcType="INTEGER" property="collectTimes"/>
+        <result column="anomaly_times" jdbcType="INTEGER" property="anomalyTimes"/>
+        <result column="emergency_contact_id" jdbcType="INTEGER" property="emergencyContactId"/>
+        <result column="bracelet_longitude" jdbcType="DOUBLE" property="braceletLongitude"/>
+        <result column="bracelet_latitude" jdbcType="DOUBLE" property="braceletLatitude"/>
+        <result column="offline_time" jdbcType="VARCHAR" property="offlineTime"/>
+        <result column="offline_duration" jdbcType="VARCHAR" property="offlineDuration"/>
+
+    </resultMap>
+    <sql id="bracelet">
+        BraceletId,ElderlyId,EquipmentName,EquipmentType,SnCode,CarryState,UserName,Telephone,
+        Community,OnlineState,CollectTimes,AnomalyTimes,EmergencyContactId,Longitude,Latitude,OfflineTime,OfflineDuration;
+    </sql>
+
+    <select id="findBraceletEquipment" resultMap="BaseResultMap">
+        select *  from bracelet
+    </select>
+
+    <select id="findElderlyName" resultType="java.lang.String">
+        select name from elderly where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findElderlyCommunity" resultType="java.lang.String">
+        select community from elderly where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findElderlyTelephone" resultType="java.lang.String">
+        select telephone from elderly where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findBraceletEquipmentBySnCode" resultMap="BaseResultMap">
+        select  bracelet_id,elderly_id,equipment_name,equipment_type,sn_code,carry_state,
+        online_state,collect_times,anomaly_times,emergency_contact_id,bracelet_longitude,bracelet_latitude,
+        offline_time,offline_duration
+         from bracelet where sn_code = #{snCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findBraceletOnline" resultType="java.lang.Integer">
+        SELECT count(online_state) as count
+        FROM bracelet where online_state = "1"
+    </select>
+    <select id="findAllBraceletEquipment" resultType="com.sc_core.entity.BraceletEquipment">
+        select bracelet_id,elderly_id,equipment_name,equipment_type,sn_code,carry_state,
+        online_state,collect_times,anomaly_times,emergency_contact_id,bracelet_longitude,bracelet_latitude,
+        offline_time,offline_duration from bracelet
+        <where>
+            <if test="equipmentName != null and equipmentName != ''">
+                and equipment_name = #{equipmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="onlineState != null and onlineState != ''">
+                and online_state = #{onlineState,jdbcType=VARCHAR}
+            </if>
+            <if test="elderlyId != null and elderlyId != ''">
+                and elderly_id = #{elderlyId,jdbcType=INTEGER}
+            </if>
+            <if test="snCode != null and snCode != ''">
+                and sn_code = #{snCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

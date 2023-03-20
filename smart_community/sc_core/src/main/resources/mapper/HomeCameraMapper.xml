@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sc_core.dao.HomeCameraMapper">
+    <resultMap id="BaseResultMap" type="com.sc_core.entity.HomeCameraEquipment">
+        <id column="home_camera_id" jdbcType="INTEGER" property="homeCameraId"/>
+        <result column="elderly_id" jdbcType="INTEGER" property="elderlyId"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType"/>
+        <result column="sn_code" jdbcType="VARCHAR" property="snCode"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="community" jdbcType="VARCHAR" property="community"/>
+        <result column="online_state" jdbcType="VARCHAR" property="onlineState"/>
+        <result column="emergency_contact_id" jdbcType="INTEGER" property="emergencyContactId"/>
+        <result column="monitor_info" jdbcType="VARCHAR" property="monitorInfo"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="offline_time" jdbcType="VARCHAR" property="offlineTime"/>
+        <result column="offline_duration" jdbcType="VARCHAR" property="offlineDuration"/>
+    </resultMap>
+    <sql id="sos_alarm">
+        HomeCameraId,ElderlyId,EquipmentName,EquipmentType,SnCode,CarryState,UserName,Telephone,
+        Community,OnlineState,EmergencyContactId,MonitorInfo,Longitude,Latitude,OfflineTime,OfflineDuration;
+    </sql>
+    <select id="findHomeCanmeraEquipment" resultMap="BaseResultMap">
+        select * from home_camera
+    </select>
+    <select id="findHomeCanmeraEquipmentBySnCode" resultMap="BaseResultMap">
+        select * from home_camera where sn_code = #{snCode,jdbcType=VARCHAR}
+    </select>
+    <select id="findHomeOnline" resultType="java.lang.Integer">
+        SELECT count(online_state) as count
+        FROM home_camera where online_state = "1"
+    </select>
+    <select id="findAllHomeCanmeraEquipment" resultType="com.sc_core.entity.HomeCameraEquipment">
+        select * from home_camera
+        <where>
+            <if test="equipmentName != null and equipmentName != ''">
+                and equipment_name = #{equipmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="onlineState != null and onlineState != ''">
+                and online_state = #{onlineState,jdbcType=VARCHAR}
+            </if>
+            <if test="elderlyId != null and elderlyId != ''">
+                and elderly_id = #{elderlyId,jdbcType=INTEGER}
+            </if>
+            <if test="snCode != null and snCode != ''">
+                and sn_code = #{snCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc_core.dao.CaregiverMapper">
+
+    <select id="queryCaregiverByElderlyId" resultType="Caregiver">
+        SELECT caregiver_id,name,sex,age,telephone,elderly_id,caregiver_longitude,caregiver_latitude,caregiver_photo
+        FROM caregiver
+        WHERE elderly_id = #{elderlyId};
+    </select>
+    <select id="findCaregiverByKeyWords" resultType="com.sc_core.entity.Caregiver">
+        SELECT caregiver_id,name,sex,age,telephone,elderly_id,caregiver_longitude,caregiver_latitude,caregiver_photo,username,password
+        FROM caregiver
+        <where>
+            <if test=" elderlyId != null and elderlyId != ''">
+                and elderly_id = #{elderlyId}
+            </if>
+            <if test=" name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test=" username != null and username != ''">
+                and username = #{username}
+            </if>
+
+        </where>
+
+    </select>
+
+</mapper>

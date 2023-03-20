@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc_core.dao.AllSqlTestMapper">
+    <select id="test_Mapper" resultType="java.lang.String">
+        select #{msg};
+	</select>
+
+    <select id="queryEveryCaregiverInfo" resultType="Caregiver">
+        SELECT * FROM caregiver;
+    </select>
+
+    <select id="queryEveryElderlyInfo" resultType="Elderly">
+        SELECT * FROM elderly ;
+    </select>
+
+    <select id="queryEveryFamilyMembersInfo" resultType="FamilyMembers">
+        SELECT *
+        FROM family_members;
+    </select>
+</mapper>

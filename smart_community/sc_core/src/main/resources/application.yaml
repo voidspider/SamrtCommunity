@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sc_core
+  profiles:
+    active: local
+mybatis:
+  type-aliases-package: com.sc_core.entity
+  mapperLocations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

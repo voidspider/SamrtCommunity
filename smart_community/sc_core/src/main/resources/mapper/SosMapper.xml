@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sc_core.dao.SosMapper">
+        <resultMap id="BaseResultMap" type="com.sc_core.entity.SosEquipment">
+            <id column="sos_alarm_id" jdbcType="INTEGER" property="sosAlarmId"/>
+            <result column="elderly_id" jdbcType="INTEGER" property="elderlyId"/>
+            <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+            <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType"/>
+            <result column="sn_code" jdbcType="VARCHAR" property="snCode"/>
+            <result column="username" jdbcType="VARCHAR" property="userName"/>
+            <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+            <result column="community" jdbcType="VARCHAR" property="community"/>
+            <result column="online_state" jdbcType="VARCHAR" property="onlineState"/>
+            <result column="emergency_contact_id" jdbcType="INTEGER" property="emergencyContactId"/>
+            <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+            <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+            <result column="offline_time" jdbcType="VARCHAR" property="offlineTime"/>
+            <result column="offline_duration" jdbcType="VARCHAR" property="offlineDuration"/>
+        </resultMap>
+        <sql id="sos_alarm">
+        SosAlarmId,ElderlyId,EquipmentName,EquipmentType,SnCode,CarryState,UserName,Telephone,
+        Community,OnlineState,EmergencyContactId,Longitude,Latitude,offlineTime,OfflineDuration;
+    </sql>
+    <select id="findSosEquipment" resultMap="BaseResultMap">
+        select * from sos_alarm
+    </select>
+    <select id="findSosEquipmentBySnCode" resultMap="BaseResultMap">
+        select * from sos_alarm where sn_code = #{snCode,jdbcType=VARCHAR}
+    </select>
+    <select id="findSosOnline" resultType="java.lang.Integer">
+        SELECT count(online_state) as count
+        FROM sos_alarm where online_state = "1"
+    </select>
+    <select id="findAllSosEquipment" resultType="com.sc_core.entity.SosEquipment">
+        select * from sos_alarm
+        <where>
+            <if test="equipmentName != null and equipmentName != ''">
+                and equipment_name = #{equipmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="onlineState != null and onlineState != ''">
+                and online_state = #{onlineState,jdbcType=VARCHAR}
+            </if>
+            <if test="elderlyId != null and elderlyId != ''">
+                and elderly_id = #{elderlyId,jdbcType=INTEGER}
+            </if>
+            <if test="snCode != null and snCode != ''">
+                and sn_code = #{snCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

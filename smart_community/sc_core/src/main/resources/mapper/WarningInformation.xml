@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc_core.dao.WarningInformationMapper">
+    <resultMap id="BaseResultMap" type="com.sc_core.entity.WarningInformation">
+        <id column="warning_information_id" jdbcType="INTEGER" property="wariningInfoId"/>
+        <result column="elderly_id" jdbcType="INTEGER" property="elderlyId"/>
+        <result column="initiator_name" jdbcType="VARCHAR" property="initiatorName"/>
+        <result column="warning_type" jdbcType="VARCHAR" property="warningType"/>
+        <result column="warning_time" jdbcType="VARCHAR" property="warningTime"/>
+        <result column="response_time" jdbcType="VARCHAR" property="responseTime"/>
+        <result column="warning_address" jdbcType="VARCHAR" property="warningAddress"/>
+        <result column="warning_equipment" jdbcType="VARCHAR" property="warningEquipment"/>
+        <result column="help_state" jdbcType="VARCHAR" property="helpState"/>
+        <result column="addition_information" jdbcType="VARCHAR" property="additionInfo"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="emergency_contact_info" jdbcType="VARCHAR" property="emergencyContactInfo"/>
+        <result column="receive_warning_id" jdbcType="INTEGER" property="receiveWarningId"/>
+        <result column="solve_time" jdbcType="VARCHAR" property="solveTime"/>
+        <result column="warning_solve_describe" jdbcType="VARCHAR" property="warningSolveDescribe"/>
+        <result column="elderly_responser_distance" jdbcType="DOUBLE" property="elderlyResponserDistance"/>
+
+    </resultMap>
+
+    <select id="queryInfoByElderlyId" resultType="WarningInformation">
+        SELECT *
+        FROM warning_information
+        WHERE elderly_id = #{elderlyId};
+    </select>
+
+    <select id="findWarningInfo" resultMap="BaseResultMap">
+        select warning_information_id,elderly_id,initiator_name,warning_type,warning_time,warning_address,help_state,addition_information,
+        warning_equipment,response_time,sn_code,receive_warning_id,solve_time,warning_solve_describe,elderly_responser_distance
+        from warning_information
+        <where>
+            <if test="elderlyName != null and elderlyName != ''">
+                and initiator_name like concat('%', #{elderlyName}, '%')
+            </if>
+            <if test="warningEquipment != null and warningEquipment != ''">
+                and warning_equipment like concat('%', #{warningEquipment}, '%')
+            </if>
+            <if test="elderlyId != null and elderlyId != ''">
+                and elderly_id = #{elderlyId}
+            </if>
+            <if test="warningType != null and warningType != ''">
+                and warning_type like concat('%', #{warningType,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="helpState != null and helpState != ''">
+                and help_state = #{helpState,jdbcType=INTEGER}
+            </if>
+            <if test="warningAddress != null and warningAddress != ''">
+                and warning_address like concat('%', #{warningAddress,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findFamilyID" resultType="java.lang.Integer">
+         select family_members_id from elderly_family_members where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findFamilyTelephone" resultType="java.lang.String">
+        select telephone from family_members where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findInfoCount" resultType="java.lang.Integer">
+        select count(*) from warning_information
+    </select>
+    <select id="findWarningInfoById" resultMap="BaseResultMap">
+        select * from warning_information where warning_information_id = #{warningInfoId,jdbcType=INTEGER}
+    </select>
+    <select id="findWarningInfoByElderlyIds" resultType="com.sc_core.entity.WarningInformation">
+        select * from warning_information where elderly_id in
+        <foreach item="elderlyId" collection="elderlyIds" open="(" close=")" separator=",">
+            #{elderlyIds}
+        </foreach>
+
+    </select>
+    <select id="findWarningInfoByElderlyId" resultMap="BaseResultMap">
+         select * from warning_information where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+    <select id="findEmergencyCount" resultType="java.lang.Integer">
+        SELECT count(warning_type) as count
+        FROM warning_information where warning_type = "紧急预警"
+    </select>
+    <select id="findCommonCount" resultType="java.lang.Integer">
+        SELECT count(warning_type) as count
+        FROM warning_information where warning_type = "一般预警"
+    </select>
+    <select id="findEmergencyAlarmingCount" resultType="java.lang.Integer">
+        SELECT count(*) as count
+        FROM warning_information where warning_type = "紧急预警" and help_state='预警中'
+    </select>
+    <select id="findEmergencyHelpingCount" resultType="java.lang.Integer">
+         SELECT count(*) as count
+        FROM warning_information where warning_type = "紧急预警" and help_state='救助中'
+    </select>
+    <select id="findEmergencySolvedCount" resultType="java.lang.Integer">
+         SELECT count(*) as count
+        FROM warning_information where warning_type = "紧急预警" and help_state='已解决'
+    </select>
+    <select id="findCommonAlarmingCount" resultType="java.lang.Integer">
+         SELECT count(*) as count
+        FROM warning_information where warning_type = "一般预警" and help_state='预警中'
+    </select>
+    <select id="findCommonHelpingCount" resultType="java.lang.Integer">
+         SELECT count(*) as count
+        FROM warning_information where warning_type = "一般预警" and help_state='救助中'
+    </select>
+    <select id="findCommonSolvedCount" resultType="java.lang.Integer">
+         SELECT count(*) as count
+        FROM warning_information where warning_type = "一般预警" and help_state='已解决'
+    </select>
+    <select id="findFamilyInfo" resultType="FamilyMembers"  >
+        select name,telephone from family_members where elderly_id = #{elderlyId,jdbcType=INTEGER}
+    </select>
+
+
+</mapper>

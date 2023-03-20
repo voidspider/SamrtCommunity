@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DoorMagnetMapper">
+    <insert id="dataPayload" parameterType="Device">
+        INSERT INTO hardware_door_data_payload
+(
+battery_value,
+sinr,
+ecl,
+rsrp,
+pci,
+cell_id,
+IMEI,
+IMSI,
+ICCID,
+alarm_type,
+open_state,
+arming_state,
+terminal_type,
+heartbeat_time,
+battery_voltage,
+hardware_version,
+software_version,
+manufacturer_name
+)
+VALUES(
+#{battery_value},
+#{sinr},
+#{ecl},
+#{rsrp},
+#{pci},
+#{cell_id},
+#{IMEI},
+#{IMSI},
+#{ICCID},
+#{alarm_type},
+#{open_state},
+#{arming_state},
+#{terminal_type},
+#{heartbeat_time},
+#{battery_voltage},
+#{hardware_version},
+#{software_version},
+#{manufacturer_name}
+      )
+    </insert>
+
+    <insert id="dataMetaInfo" parameterType="DataChanges">
+        INSERT INTO hardware_door_data_meta_info
+(
+upPacketSN,
+upDataSN,
+topic,
+timestamp,
+tenantId,
+serviceId,
+protocol,
+productId,
+messageType,
+deviceType,
+deviceId,
+assocAssetId,
+IMSI,
+IMEI
+)
+VALUES(
+#{upPacketSN},
+#{upDataSN},
+#{topic},
+#{timestamp},
+#{tenantId},
+#{serviceId},
+#{protocol},
+#{productId},
+#{messageType},
+#{deviceType},
+#{deviceId},
+#{assocAssetId},
+#{IMSI},
+#{IMEI}
+      )
+    </insert>
+
+    <insert id="eventMetaInfo" parameterType="EventReport">
+        INSERT INTO hardware_door_event_meta_info
+(
+timestamp,
+tenantId,
+serviceId,
+protocol,
+productId,
+messageType,
+eventType,
+deviceSn,
+deviceId,
+IMSI,
+IMEI
+)
+VALUES(
+          #{timestamp},
+          #{tenantId},
+          #{serviceId},
+          #{protocol},
+          #{productId},
+          #{messageType},
+          #{eventType},
+          #{deviceSn},
+          #{deviceId},
+          #{IMSI},
+          #{IMEI}
+      )
+    </insert>
+
+    <insert id="eventContent" parameterType="Device">
+        INSERT INTO hardware_door_event_content
+(
+arming_state,
+battery_voltage,
+battery_value,
+open_state,
+alarm_type
+)
+VALUES(
+          #{arming_state},
+          #{battery_voltage},
+          #{battery_value},
+          #{open_state},
+          #{alarm_type}
+      )
+    </insert>
+
+    <insert id="online" parameterType="Online">
+        INSERT INTO hardware_door_online_offline
+(
+deviceId,
+tenantId,
+productId,
+eventType,
+messageType,
+timestamp
+)
+VALUES(
+          #{deviceId},
+          #{tenantId},
+          #{productId},
+          #{eventType},
+          #{messageType},
+          #{timestamp}
+      )
+    </insert>
+</mapper>
